@@ -3,6 +3,7 @@ from app.models.application import (
     Application,
     ApplicationList,
     CreateApplicationRequest,
+    UpdateApplicationStatusRequest,
 )
 
 router = APIRouter(
@@ -35,3 +36,15 @@ def create_application(request: CreateApplicationRequest):
 
     applications_db.append(application)
     return application
+
+@router.put("/{application_id}", response_model=Application)
+def update_application_status(
+    application_id: int,
+    request: UpdateApplicationStatusRequest,
+):
+    for application in applications_db:
+        if application.id == application_id:
+            application.status = request.status
+            return application
+
+    return {"error": "Application not found"}

@@ -13,8 +13,8 @@ router = APIRouter(
 
 # Temporary in-memory database
 applications_db = [
-    Application(id=1, company="Google", role="Software Engineer", status="Applied"),
-    Application(id=2, company="PwC", role="Technology Consultant", status="Interview"),
+    Application(id=1, company="ABC", role="Software Engineer", status="Applied"),
+    Application(id=2, company="XYZ", role="Technology Consultant", status="Interview"),
 ]
 
 

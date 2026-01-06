@@ -65,6 +65,21 @@ function App() {
     });
   };
 
+  const deleteApplication = (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this application?"
+    );
+
+    if (!confirmed) return;
+
+    fetch(`http://127.0.0.1:8000/applications/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      fetchApplications();
+    });
+  };
+
+
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
       <h1>Application Tracker</h1>
@@ -114,9 +129,9 @@ function App() {
             <th style={headerStyle}>Company</th>
             <th style={headerStyle}>Role</th>
             <th style={headerStyle}>Status</th>
+            <th style={headerStyle}>Actions</th>
           </tr>
         </thead>
-
         <tbody>
           {applications.map((app) => (
             <tr key={app.id}>
@@ -132,6 +147,20 @@ function App() {
                   <option value="Offer">Offer</option>
                   <option value="Rejected">Rejected</option>
                 </select>
+              </td>
+              <td style={cellStyle}>
+                <button
+                  onClick={() => deleteApplication(app.id)}
+                  style={{
+                    backgroundColor: "#e74c3c",
+                    color: "white",
+                    border: "none",
+                    padding: "4px 8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

@@ -48,3 +48,12 @@ def update_application_status(
             return application
 
     return {"error": "Application not found"}
+
+@router.delete("/{application_id}")
+def delete_application(application_id: int):
+    for i, application in enumerate(applications_db):
+        if application.id == application_id:
+            applications_db.pop(i)
+            return {"message": "Application deleted"}
+
+    return {"error": "Application not found"}

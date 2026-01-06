@@ -1,3 +1,4 @@
+import "./App.css";
 import { useEffect, useState } from "react";
 
 const headerStyle = {
@@ -86,9 +87,8 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
+    <div className="container">
       <h1>Application Tracker</h1>
-
       <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
         <div>
           <input
@@ -119,19 +119,14 @@ function App() {
           </select>
         </div>
 
-        <button type="submit">Add Application</button>
+        <button type="submit" className="add-button">
+          Add Application
+        </button>
       </form>
 
       {applications.length === 0 ? (
-  <p
-    style={{
-      textAlign: "center",
-      color: "#666",
-      marginTop: "2rem",
-      fontStyle: "italic",
-    }}
-  >
-    No applications yet. Add one above!
+  <p className="empty-state">
+    No applications yet. Add one above
   </p>
 ) : (
   <table
@@ -170,15 +165,7 @@ function App() {
                 <button
                   onClick={() => deleteApplication(app.id)}
                   disabled={deletingId === app.id}
-                  style={{
-                    backgroundColor:
-                      deletingId === app.id ? "#aaa" : "#e74c3c",
-                    color: "white",
-                    border: "none",
-                    padding: "4px 8px",
-                    cursor:
-                      deletingId === app.id ? "not-allowed" : "pointer",
-                  }}
+                  className="delete-button"
                 >
                   {deletingId === app.id ? "Deleting..." : "Delete"}
                 </button>

@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["Applications"],
 )
 
-# Temporary in-memory store
+# Temporary in-memory database
 applications_db = [
     Application(id=1, company="Google", role="Software Engineer", status="Applied"),
     Application(id=2, company="PwC", role="Technology Consultant", status="Interview"),

@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 const API_URL = process.env.REACT_APP_API_URL;
+
 const headerStyle = {
   borderBottom: "2px solid #ddd",
   padding: "8px",
@@ -20,6 +21,7 @@ function App() {
   const [status, setStatus] = useState("Applied");
   const [deletingId, setDeletingId] = useState(null);
 
+  // -------- Fetch Applications --------
   const fetchApplications = () => {
     fetch(`${API_URL}/applications`)
       .then((response) => response.json())
@@ -32,6 +34,7 @@ function App() {
     fetchApplications();
   }, []);
 
+  // -------- Create Application --------
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -41,9 +44,9 @@ function App() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        company: company,
-        role: role,
-        status: status,
+        company,
+        role,
+        status,
       }),
     }).then(() => {
       setCompany("");
@@ -53,8 +56,9 @@ function App() {
     });
   };
 
+  // -------- Update Status (FIXED) --------
   const updateStatus = (id, newStatus) => {
-    fetch(`${API_URL}/applications`, {
+    fetch(`${API_URL}/applications/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -67,6 +71,7 @@ function App() {
     });
   };
 
+  // -------- Delete Application --------
   const deleteApplication = (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this application?"
@@ -76,7 +81,7 @@ function App() {
 
     setDeletingId(id);
 
-    fetch(`${API_URL}/applications`, {
+    fetch(`${API_URL}/applications/${id}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -90,6 +95,8 @@ function App() {
   return (
     <div className="container">
       <h1>Application Tracker</h1>
+
+      {/* -------- Form -------- */}
       <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
         <div>
           <input
@@ -125,60 +132,62 @@ function App() {
         </button>
       </form>
 
+      {/* -------- Empty State -------- */}
       {applications.length === 0 ? (
-  <p className="empty-state">
-    No applications yet. Add one above
-  </p>
-) : (
-  <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          marginTop: "1rem",
-        }}
-      >
-        <thead>
-          <tr>
-            <th style={headerStyle}>Company</th>
-            <th style={headerStyle}>Role</th>
-            <th style={headerStyle}>Status</th>
-            <th style={headerStyle}>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {applications.map((app) => (
-            <tr key={app.id}>
-              <td style={cellStyle}>{app.company}</td>
-              <td style={cellStyle}>{app.role}</td>
-              <td style={cellStyle}>
-                <select
-                  value={app.status}
-                  onChange={(e) => updateStatus(app.id, e.target.value)}
-                >
-                  <option value="Applied">Applied</option>
-                  <option value="Interview">Interview</option>
-                  <option value="Offer">Offer</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
-              </td>
-              <td style={cellStyle}>
-                <button
-                  onClick={() => deleteApplication(app.id)}
-                  disabled={deletingId === app.id}
-                  className="delete-button"
-                >
-                  {deletingId === app.id ? "Deleting..." : "Delete"}
-                </button>
-              </td>
+        <p className="empty-state">
+          No applications yet. Add one above.
+        </p>
+      ) : (
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginTop: "1rem",
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={headerStyle}>Company</th>
+              <th style={headerStyle}>Role</th>
+              <th style={headerStyle}>Status</th>
+              <th style={headerStyle}>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    )}
+          </thead>
+
+          <tbody>
+            {applications.map((app) => (
+              <tr key={app.id}>
+                <td style={cellStyle}>{app.company}</td>
+                <td style={cellStyle}>{app.role}</td>
+                <td style={cellStyle}>
+                  <select
+                    value={app.status}
+                    onChange={(e) =>
+                      updateStatus(app.id, e.target.value)
+                    }
+                  >
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Offer">Offer</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </td>
+                <td style={cellStyle}>
+                  <button
+                    onClick={() => deleteApplication(app.id)}
+                    disabled={deletingId === app.id}
+                    className="delete-button"
+                  >
+                    {deletingId === app.id ? "Deleting..." : "Delete"}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
 
 export default App;
-

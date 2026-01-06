@@ -122,7 +122,19 @@ function App() {
         <button type="submit">Add Application</button>
       </form>
 
-      <table
+      {applications.length === 0 ? (
+  <p
+    style={{
+      textAlign: "center",
+      color: "#666",
+      marginTop: "2rem",
+      fontStyle: "italic",
+    }}
+  >
+    No applications yet. Add one above!
+  </p>
+) : (
+  <table
         style={{
           width: "100%",
           borderCollapse: "collapse",
@@ -137,6 +149,7 @@ function App() {
             <th style={headerStyle}>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {applications.map((app) => (
             <tr key={app.id}>
@@ -158,11 +171,13 @@ function App() {
                   onClick={() => deleteApplication(app.id)}
                   disabled={deletingId === app.id}
                   style={{
-                    backgroundColor: deletingId === app.id ? "#aaa" : "#e74c3c",
+                    backgroundColor:
+                      deletingId === app.id ? "#aaa" : "#e74c3c",
                     color: "white",
                     border: "none",
                     padding: "4px 8px",
-                    cursor: deletingId === app.id ? "not-allowed" : "pointer",
+                    cursor:
+                      deletingId === app.id ? "not-allowed" : "pointer",
                   }}
                 >
                   {deletingId === app.id ? "Deleting..." : "Delete"}
@@ -172,6 +187,7 @@ function App() {
           ))}
         </tbody>
       </table>
+    )}
     </div>
   );
 }

@@ -13,10 +13,10 @@ const cellStyle = {
 
 function App() {
   const [applications, setApplications] = useState([]);
-
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("Applied");
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchApplications = () => {
     fetch("http://127.0.0.1:8000/applications")
@@ -72,13 +72,18 @@ function App() {
 
     if (!confirmed) return;
 
+    setDeletingId(id);
+
     fetch(`http://127.0.0.1:8000/applications/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      fetchApplications();
-    });
+    })
+      .then(() => {
+        fetchApplications();
+      })
+      .finally(() => {
+        setDeletingId(null);
+      });
   };
-
 
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
@@ -151,15 +156,16 @@ function App() {
               <td style={cellStyle}>
                 <button
                   onClick={() => deleteApplication(app.id)}
+                  disabled={deletingId === app.id}
                   style={{
-                    backgroundColor: "#e74c3c",
+                    backgroundColor: deletingId === app.id ? "#aaa" : "#e74c3c",
                     color: "white",
                     border: "none",
                     padding: "4px 8px",
-                    cursor: "pointer",
+                    cursor: deletingId === app.id ? "not-allowed" : "pointer",
                   }}
                 >
-                  Delete
+                  {deletingId === app.id ? "Deleting..." : "Delete"}
                 </button>
               </td>
             </tr>

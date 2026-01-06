@@ -14,3 +14,6 @@ class CreateApplicationRequest(BaseModel):
     company: str
     role: str
     status: str
+
+class UpdateApplicationStatusRequest(BaseModel):
+    status: str

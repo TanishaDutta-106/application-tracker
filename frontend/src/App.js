@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 
+const API_URL = process.env.REACT_APP_API_URL;
 const headerStyle = {
   borderBottom: "2px solid #ddd",
   padding: "8px",
@@ -20,7 +21,7 @@ function App() {
   const [deletingId, setDeletingId] = useState(null);
 
   const fetchApplications = () => {
-    fetch("http://127.0.0.1:8000/applications")
+    fetch(`${API_URL}/applications`)
       .then((response) => response.json())
       .then((data) => {
         setApplications(data.applications);
@@ -34,7 +35,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:8000/applications", {
+    fetch(`${API_URL}/applications`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +54,7 @@ function App() {
   };
 
   const updateStatus = (id, newStatus) => {
-    fetch(`http://127.0.0.1:8000/applications/${id}`, {
+    fetch(`${API_URL}/applications`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +76,7 @@ function App() {
 
     setDeletingId(id);
 
-    fetch(`http://127.0.0.1:8000/applications/${id}`, {
+    fetch(`${API_URL}/applications`, {
       method: "DELETE",
     })
       .then(() => {

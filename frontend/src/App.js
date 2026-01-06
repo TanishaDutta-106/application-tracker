@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 
+const headerStyle = {
+  borderBottom: "2px solid #ddd",
+  padding: "8px",
+  textAlign: "left",
+};
+
+const cellStyle = {
+  borderBottom: "1px solid #eee",
+  padding: "8px",
+};
+
 function App() {
   const [applications, setApplications] = useState([]);
 
@@ -91,24 +102,41 @@ function App() {
         <button type="submit">Add Application</button>
       </form>
 
-      <ul>
-        {applications.map((app) => (
-          <li key={app.id} style={{ marginBottom: "0.75rem" }}>
-            <strong>{app.company}</strong> — {app.role}
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          marginTop: "1rem",
+        }}
+      >
+        <thead>
+          <tr>
+            <th style={headerStyle}>Company</th>
+            <th style={headerStyle}>Role</th>
+            <th style={headerStyle}>Status</th>
+          </tr>
+        </thead>
 
-            <select
-              value={app.status}
-              onChange={(e) => updateStatus(app.id, e.target.value)}
-              style={{ marginLeft: "0.5rem" }}
-            >
-              <option value="Applied">Applied</option>
-              <option value="Interview">Interview</option>
-              <option value="Offer">Offer</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </li>
-        ))}
-      </ul>
+        <tbody>
+          {applications.map((app) => (
+            <tr key={app.id}>
+              <td style={cellStyle}>{app.company}</td>
+              <td style={cellStyle}>{app.role}</td>
+              <td style={cellStyle}>
+                <select
+                  value={app.status}
+                  onChange={(e) => updateStatus(app.id, e.target.value)}
+                >
+                  <option value="Applied">Applied</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Offer">Offer</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
